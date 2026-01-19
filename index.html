@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Run From Mangoes V4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #070b1f;
+      --accent: #ffb347;
+      --accent-soft: rgba(255, 179, 71, 0.12);
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --card: #0b1024;
+      --border: #1f2937;
+      --danger: #f97373;
+      --success: #4ade80;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 20px 16px 64px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 18px;
+      margin-bottom: 32px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 12px;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 20%, #fff7ed 0, #fed7aa 18%, #f97316 55%, #7c2d12 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(248, 113, 22, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 120% 0, rgba(255, 255, 255, 0.4), transparent 55%);
+      mix-blend-mode: screen;
+    }
+
+    .brand-logo span {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0b1024;
+    }
+
+    .brand-text-title {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: 15px;
+    }
+
+    .brand-text-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    nav a {
+      padding: 6px 10px;
+      border-radius: 999px;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+    }
+
+    nav a:hover {
+      background: rgba(31, 41, 55, 0.9);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #f97316, #facc15);
+      color: #111827;
+      font-weight: 600;
+      box-shadow: 0 12px 30px rgba(248, 113, 22, 0.55);
+    }
+
+    .nav-cta span {
+      font-size: 14px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .hero-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #bbf7d0 0, #22c55e 40%, #166534 100%);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 4vw, 40px);
+      line-height: 1.1;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #f97316, #facc15);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 18px;
+    }
+
+    .hero-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(248, 250, 252, 0.06);
+      font-size: 11px;
+      color: #e5e7eb;
+      margin-bottom: 18px;
+    }
+
+    .hero-highlight-tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(248, 113, 22, 0.12);
+      color: #fed7aa;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .btn-primary {
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f97316, #facc15);
+      color: #111827;
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 16px 40px rgba(248, 113, 22, 0.6);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 50px rgba(248, 113, 22, 0.75);
+    }
+
+    .btn-ghost {
+      padding: 9px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--muted);
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(31, 41, 55, 0.95);
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.8);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-meta-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #e5e7eb;
+    }
+
+    .hero-card {
+      border-radius: 24px;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .hero-card-title {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .hero-card-title span {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .hero-card-tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.12);
+      color: #bbf7d0;
+      font-size: 11px;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+    }
+
+    .hero-card-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+    }
+
+    .hero-card-mango {
+      position: relative;
+      padding: 10px;
+      border-radius: 18px;
+      background: radial-gradient(circle at 20% 0, rgba(248, 250, 252, 0.08), transparent 55%);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      overflow: hidden;
+    }
+
+    .mango-orbit {
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 20% 0, rgba(248, 250, 252, 0.12), transparent 55%),
+        radial-gradient(circle at 80% 100%, rgba(248, 113, 22, 0.35), transparent 60%),
+        radial-gradient(circle at 0 100%, rgba(234, 179, 8, 0.35), transparent 60%);
+      opacity: 0.9;
+      filter: blur(1px);
+    }
+
+    .mango-emoji {
+      position: relative;
+      font-size: 52px;
+      text-align: center;
+      z-index: 1;
+      transform: translateY(2px);
+    }
+
+    .mango-alert {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(248, 113, 22, 0.18);
+      border: 1px solid rgba(248, 113, 22, 0.6);
+      font-size: 10px;
+      color: #fed7aa;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 2;
+    }
+
+    .mango-alert-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #fee2e2 0, #f97373 40%, #7f1d1d 100%);
+      box-shadow: 0 0 10px rgba(248, 113, 22, 0.9);
+    }
+
+    .hero-card-stats {
+      font-size: 11px;
+      color: var(--muted);
+      display: grid;
+      gap: 6px;
+    }
+
+    .hero-card-stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hero-card-stat-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-card-stat-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #e5e7eb;
+    }
+
+    .hero-card-stat-value {
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .hero-card-progress {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(55, 65, 81, 0.9);
+      display: grid;
+      gap: 6px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      position: absolute;
+      inset: 0;
+      width: 78%;
+      background: linear-gradient(90deg, #f97316, #facc15);
+      border-radius: inherit;
+      box-shadow: 0 0 16px rgba(248, 113, 22, 0.7);
+    }
+
+    .hero-card-footer {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .hero-card-footer span strong {
+      color: #e5e7eb;
+    }
+
+    .hero-card-footer-pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 10px;
+      color: #e5e7eb;
+    }
+
+    .section-title {
+      font-size: 18px;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .item-card {
+      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 12px 12px 11px;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .item-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(248, 113, 22, 0.18);
+      border: 1px solid rgba(248, 113, 22, 0.6);
+      font-size: 9px;
+      color: #fed7aa;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .item-name {
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .item-value {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .item-prices {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .item-price-old {
+      text-decoration: line-through;
+      color: #6b7280;
+    }
+
+    .item-price-new {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f97316;
+    }
+
+    .item-discount {
+      margin-left: auto;
+      font-size: 10px;
+      color: #bbf7d0;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+    }
+
+    .item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .item-cta {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f97316, #facc15);
+      color: #111827;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .item-stock {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .why-card {
+      border-radius: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 10px 10px 9px;
+      font-size: 11px;
+      color: var(--muted);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    }
+
+    .why-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .why-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+    }
+
+    .reviews {
+      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 14px 14px 12px;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
+      margin-bottom: 26px;
+    }
+
+    .reviews-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .reviews-rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .reviews-stars {
+      color: #facc15;
+      font-size: 13px;
+    }
+
+    .reviews-count {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .reviews-badge {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 10px;
+      color: #e5e7eb;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .review-card {
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 8px 9px;
+    }
+
+    .review-quote {
+      font-size: 11px;
+      color: #e5e7eb;
+      margin-bottom: 6px;
+    }
+
+    .review-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+    }
+
+    .review-name {
+      color: #9ca3af;
+    }
+
+    .review-time {
+      color: #6b7280;
+    }
+
+    footer {
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding-top: 18px;
+      font-size: 11px;
+      color: var(--muted);
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .footer-links-group-title {
+      font-size: 11px;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+    }
+
+    .footer-links a {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    .footer-links a:hover {
+      color: #e5e7eb;
+    }
+
+    .footer-note {
+      font-size: 10px;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        border-radius: 18px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-card {
+        order: -1;
+      }
+
+      .items-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .why-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .reviews-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      footer {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding-inline: 14px;
+      }
+
+      header {
+        padding-inline: 12px;
+      }
+
+      .items-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .why-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .reviews-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">
+          <span>M</span>
+        </div>
+        <div>
+          <div class="brand-text-title">Run From Mangoes V4</div>
+          <div class="brand-text-sub">The most trusted Run From Mangoes hub</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#items">Items</a>
+        <a href="#why">Why Us</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#support">Support</a>
+        <a href="#store" class="nav-cta">
+          <span>Open Store</span>
+          <span>🛒</span>
+        </a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            <span>Live drops for Run From Mangoes V4</span>
+          </div>
+          <h1 class="hero-title">
+            Escape the mango storm with
+            <span>premium pets & sheckles.</span>
+          </h1>
+          <p class="hero-subtitle">
+            Get the rarest pets and the juiciest sheckles for Run From Mangoes V4—fast delivery, safe trades, and
+            zero scams.
+          </p>
+
+          <div class="hero-highlight">
+            <span class="hero-highlight-tag">New</span>
+            <span>Season 4 mango event items now in stock.</span>
+          </div>
+
+          <div class="hero-actions">
+            <button class="btn-primary">
+              Browse all items
+              <span>→</span>
+            </button>
+            <button class="btn-ghost">
+              View delivery steps
+              <span>⏱</span>
+            </button>
+          </div>
+
+          <div class="hero-meta">
+            <div class="hero-meta-item">
+              <span class="hero-meta-pill">Instant delivery</span>
+              <span>Average delivery under 5 minutes</span>
+            </div>
+            <div class="hero-meta-item">
+              <span>🔒</span>
+              <span>Secure checkout & verified trades</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <div class="hero-card-header">
+            <div class="hero-card-title">
+              Mango Threat Monitor · <span>Live</span>
+            </div>
+            <div class="hero-card-tag">Mango storm: High risk</div>
+          </div>
+
+          <div class="hero-card-main">
+            <div class="hero-card-mango">
+              <div class="mango-orbit"></div>
+              <div class="mango-alert">
+                <span class="mango-alert-dot"></span>
+                <span>Mangoes detected nearby</span>
+              </div>
+              <div class="mango-emoji">🥭</div>
+            </div>
+            <div class="hero-card-stats">
+              <div class="hero-card-stat-row">
+                <div class="hero-card-stat-label">
+                  <span class="hero-card-stat-pill">Run risk</span>
+                </div>
+                <div class="hero-card-stat-value">92%</div>
+              </div>
+              <div class="hero-card-stat-row">
+                <div class="hero-card-stat-label">
+                  <span>Safe zone distance</span>
+                </div>
+                <div class="hero-card-stat-value">143 m</div>
+              </div>
+              <div class="hero-card-stat-row">
+                <div class="hero-card-stat-label">
+                  <span>Recommended pet tier</span>
+                </div>
+                <div class="hero-card-stat-value">Mythic+</div>
+              </div>
+
+              <div class="hero-card-progress">
+                <div class="hero-card-stat-row">
+                  <span>Storm intensity</span>
+                  <span class="hero-card-stat-value">Level 7</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-card-footer">
+            <span>Over <strong>10,000+</strong> successful mango escapes</span>
+            <span class="hero-card-footer-pill">Not affiliated with Roblox</span>
+          </div>
+        </aside>
+      </section>
+
+      <section id="items">
+        <h2 class="section-title">Trending items</h2>
+        <p class="section-subtitle">
+          Our most popular Run From Mangoes V4 items—grab them before the mangoes do.
+        </p>
+
+        <div class="items-grid">
+          <article class="item-card">
+            <div class="item-tag">Best seller</div>
+            <div class="item-name">Mythic Mango Slayer Fox</div>
+            <div class="item-value">18,499 value</div>
+            <div class="item-prices">
+              <span class="item-price-old">$119.99</span>
+              <span class="item-price-new">$29.99</span>
+              <span class="item-discount">-75%</span>
+            </div>
+            <div class="item-footer">
+              <button class="item-cta">
+                Add to cart
+                <span>+</span>
+              </button>
+              <span class="item-stock">Only 7 left</span>
+            </div>
+          </article>
+
+          <article class="item-card">
+            <div class="item-tag">New</div>
+            <div class="item-name">Corrupted Mango Phantom</div>
+            <div class="item-value">6,299 value</div>
+            <div class="item-prices">
+              <span class="item-price-old">$39.99</span>
+              <span class="item-price-new">$4.99</span>
+              <span class="item-discount">-87%</span>
+            </div>
+            <div class="item-footer">
+              <button class="item-cta">
+                Add to cart
+                <span>+</span>
+              </button>
+              <span class="item-stock">Instant delivery</span>
+            </div>
+          </article>
+
+          <article class="item-card">
+            <div class="item-tag">Limited</div>
+            <div class="item-name">Run From Mangoes V4 Sheckles Pack</div>
+            <div class="item-value">1,000,000 sheckles</div>
+            <div class="item-prices">
+              <span class="item-price-old">$59.99</span>
+              <span class="item-price-new">$8.99</span>
+              <span class="item-discount">-85%</span>
+            </div>
+            <div class="item-footer">
+              <button class="item-cta">
+                Add to cart
+                <span>+</span>
+              </button>
+              <span class="item-stock">Auto-trade enabled</span>
+            </div>
+          </article>
+
+          <article class="item-card">
+            <div class="item-tag">Event</div>
+            <div class="item-name">Stormproof Mango Shield</div>
+            <div class="item-value">9,999 value</div>
+            <div class="item-prices">
+              <span class="item-price-old">$49.99</span>
+              <span class="item-price-new">$6.99</span>
+              <span class="item-discount">-86%</span>
+            </div>
+            <div class="item-footer">
+              <button class="item-cta">
+                Add to cart
+                <span>+</span>
+              </button>
+              <span class="item-stock">Season 4 exclusive</span>
+            </div>
+          </article>
+
+          <article class="item-card">
+            <div class="item-tag">Hot</div>
+            <div class="item-name">Quantum Escape Portal</div>
+            <div class="item-value">14,499 value</div>
+            <div class="item-prices">
+              <span class="item-price-old">$89.99</span>
+              <span class="item-price-new">$14.99</span>
+              <span class="item-discount">-83%</span>
+            </div>
+            <div class="item-footer">
+              <button class="item-cta">
+                Add to cart
+                <span>+</span>
+              </button>
+              <span class="item-stock">High demand</span>
+            </div>
+          </article>
+
+          <article class="item-card">
+            <div class="item-tag">Bundle</div>
+            <div class="item-name">Ultimate Mango Escape Kit</div>
+            <div class="item-value">Bundle · pets + sheckles</div>
+            <div class="item-prices">
+              <span class="item-price-old">$149.99</span>
+              <span class="item-price-new">$24.99</span>
+              <span class="item-discount">-83%</span>
+            </div>
+            <div class="item-footer">
+              <button class="item-cta">
+                Add to cart
+                <span>+</span>
+              </button>
+              <span class="item-stock">Best value</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="why">
+        <h2 class="section-title">Why Run From Mangoes V4?</h2>
+        <p class="section-subtitle">
+          We’re the most trusted marketplace for Run From Mangoes V4 items, with thousands of successful trades.
+        </p>
+
+        <div class="why-grid">
+          <article class="why-card">
+            <div class="why-icon" style="background: rgba(34,197,94,0.12); color:#4ade80;">⚡</div>
+            <div class="why-title">Instant delivery</div>
+            <p>
+              Orders are delivered to your Roblox account in minutes using our automated trade system.
+            </p>
+          </article>
+
+          <article class="why-card">
+            <div class="why-icon" style="background: rgba(59,130,246,0.12); color:#60a5fa;">🛡️</div>
+            <div class="why-title">Secure & safe</div>
+            <p>
+              Encrypted checkout and verified staff mean your account and purchases stay protected.
+            </p>
+          </article>
+
+          <article class="why-card">
+            <div class="why-icon" style="background: rgba(244,114,182,0.12); color:#f472b6;">👥</div>
+            <div class="why-title">24/7 support</div>
+            <p>
+              Real humans ready to help with trades, questions, or mango-related emergencies at any time.
+            </p>
+          </article>
+
+          <article class="why-card">
+            <div class="why-icon" style="background: rgba(250,204,21,0.12); color:#facc15;">⭐</div>
+            <div class="why-title">Premium items</div>
+            <p>
+              Only the rarest pets and most valuable sheckles—no filler, no junk, just meta builds.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="reviews" class="reviews">
+        <div class="reviews-header">
+          <div class="reviews-rating">
+            <span class="reviews-stars">★★★★★</span>
+            <span>4.9/5</span>
+            <span class="reviews-count">from 1,200+ verified mango runners</span>
+          </div>
+          <div class="reviews-badge">RunFromMangoes.com · #reviews</div>
+        </div>
+
+        <div class="reviews-grid">
+          <article class="review-card">
+            <div class="review-quote">“100/10, outran every mango in the lobby.”</div>
+            <div class="review-meta">
+              <span class="review-name">mango_dodger</span>
+              <span class="review-time">2 days ago · Verified</span>
+            </div>
+          </article>
+
+          <article class="review-card">
+            <div class="review-quote">
+              “Got my 1 trillion sheckles in like 3 minutes, not a scam.”
+            </div>
+            <div class="review-meta">
+              <span class="review-name">Ostrich</span>
+              <span class="review-time">1 week ago · Verified</span>
+            </div>
+          </article>
+
+          <article class="review-card">
+            <div class="review-quote">
+              “Billing hiccup but support fixed it fast and I still escaped the storm.”
+            </div>
+            <div class="review-meta">
+              <span class="review-name">awildsamhasappeared</span>
+              <span class="review-time">2 weeks ago · Verified</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer id="support">
+      <div class="footer-brand">
+        <div class="brand">
+          <div class="brand-logo">
+            <span>M</span>
+          </div>
+          <div>
+            <div class="brand-text-title">Run From Mangoes V4</div>
+            <div class="brand-text-sub">The most trusted Run From Mangoes V4 items marketplace.</div>
+          </div>
+        </div>
+        <div class="footer-note">
+          © 2024 Run From Mangoes V4. All rights reserved. Not affiliated with Roblox Corporation or any official
+          Run From Mangoes game.
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <div>
+          <div class="footer-links-group-title">Quick links</div>
+          <a href="#items">Shop items</a>
+          <a href="#items">Pets</a>
+          <a href="#items">Sheckles</a>
+          <a href="#items">Bundles</a>
+        </div>
+        <div>
+          <div class="footer-links-group-title">Support</div>
+          <a href="#support">Help center</a>
+          <a href="#support">Discord</a>
+          <a href="#support">FAQ</a>
+          <a href="#support">Delivery info</a>
+        </div>
+        <div>
+          <div class="footer-links-group-title">Legal</div>
+          <a href="#support">Terms of service</a>
+          <a href="#support">Privacy</a>
+          <a href="#support">Refund policy</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
